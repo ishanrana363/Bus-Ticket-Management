@@ -7,7 +7,7 @@ import mongoSanitize from "express-mongo-sanitize";
 import cors from "cors";
 const app = express();
 import connectDB from './db';
-
+import router from "./src/routes/api";
 
 app.use(express.json());
 app.use(hpp());
@@ -31,6 +31,8 @@ app.get('/', (req, res) => {
     res.send('API is running...');
 });
 
+
+app.use('/api/v1', router);
 
 
 
