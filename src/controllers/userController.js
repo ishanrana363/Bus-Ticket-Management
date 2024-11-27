@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTicketsBusAndTime = exports.allBuses = void 0;
+exports.ticketPurchase = exports.getTicketsBusAndTime = exports.allBuses = void 0;
 const busModel_1 = __importDefault(require("../models/busModel"));
 const ticketModel_1 = __importDefault(require("../models/ticketModel"));
+const purchaseModel_1 = __importDefault(require("../models/purchaseModel"));
 const allBuses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const buses = yield busModel_1.default.find();
@@ -32,7 +33,6 @@ const allBuses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.allBuses = allBuses;
-// Fetch available tickets
 const getTicketsBusAndTime = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { busId, startTime, endTime } = req.body;
@@ -75,3 +75,49 @@ const getTicketsBusAndTime = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getTicketsBusAndTime = getTicketsBusAndTime;
+const ticketPurchase = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.headers._id;
+    console.log(id);
+    try {
+        const { busId, startTime, endTime, purchaseTime } = req.body;
+        if (!busId || !startTime || !endTime) {
+            return res.status(400).json({
+                success: false,
+                message: "bus name, start time end time  fields are required.",
+            });
+        }
+        // Build query dynamically
+        const query = {};
+        if (busId)
+            query.busId = busId;
+        if (startTime && endTime) {
+            query.busDeparatureTime = {
+                $gte: new Date(startTime),
+                $lte: new Date(endTime),
+            };
+        }
+        // Fetch tickets from the database
+        const tickets = yield ticketModel_1.default.find(query);
+        if (tickets.length === 0) {
+            return res.status(404).json({
+                status: "fail",
+                msg: "No tickets found for the provided bus ID and time range.",
+            });
+        }
+        if (tickets) {
+            let data = yield purchaseModel_1.default.create({ busId, userId: id, purchaseTime });
+            return res.status(201).json({
+                status: "success",
+                msg: "ticket purchase successful",
+                data: data,
+            });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({
+            status: "fail",
+            msg: error.message,
+        });
+    }
+});
+exports.ticketPurchase = ticketPurchase;

@@ -30,4 +30,5 @@ router.delete("/admin/ticket/:id", authMiddleware_1.isLogIn, authMiddleware_1.is
 // user related api
 router.get("/buses", userController_1.allBuses);
 router.get("/tickets", authMiddleware_1.isLogIn, userController_1.getTicketsBusAndTime);
+router.post("/tickets/purchase", authMiddleware_1.isLogIn, userController_1.ticketPurchase);
 exports.default = router;

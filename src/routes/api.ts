@@ -8,7 +8,7 @@ import { addBus, deleteBus, updateBus } from '../controllers/busController';
 // tickets controller
 import { deleteTicket, updateTicket, uploadTicket } from './../controllers/ticketController';
 // user controller
-import { allBuses, getTicketsBusAndTime } from '../controllers/userController';
+import { allBuses, getTicketsBusAndTime, ticketPurchase } from '../controllers/userController';
 
 
 const router = express.Router();
@@ -34,7 +34,8 @@ router.delete("/admin/ticket/:id",isLogIn,isAdmin,deleteTicket);
 // user related api
 
 router.get("/buses" , allBuses );
-router.get("/tickets", isLogIn, getTicketsBusAndTime )
+router.get("/tickets", isLogIn, getTicketsBusAndTime);
+router.post("/tickets/purchase" , isLogIn, ticketPurchase);
 
 export default router;
 
