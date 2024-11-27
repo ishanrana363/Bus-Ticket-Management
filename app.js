@@ -12,11 +12,13 @@ const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 const db_1 = __importDefault(require("./db"));
 const api_1 = __importDefault(require("./src/routes/api"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 app.use(express_1.default.json());
 app.use((0, hpp_1.default)());
 app.use((0, cors_1.default)());
 app.use((0, helmet_1.default)());
 app.use((0, express_mongo_sanitize_1.default)());
+app.use((0, cookie_parser_1.default)());
 const apiLimiter = (0, express_rate_limit_1.default)({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // Limit each IP to 100 requests per windowMs

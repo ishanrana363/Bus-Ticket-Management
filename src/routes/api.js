@@ -6,10 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 //  auth controller
 const authController_1 = require("../controllers/authController");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
 const router = express_1.default.Router();
 // auth related api
 router.post('/auth/register', authController_1.register);
 router.post("/auth/login", authController_1.login);
+router.get("/auth/logout", authMiddleware_1.isLogIn, authController_1.handleLogOut);
 exports.default = router;
 // import { Request, Response } from "express";
 // import { Ticket } from "../models/Ticket.model";

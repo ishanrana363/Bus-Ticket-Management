@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.register = void 0;
+exports.handleLogOut = exports.login = exports.register = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const tokenHelper_1 = require("../helper/tokenHelper");
@@ -61,6 +61,12 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         const key = process.env.JWTKEY;
         const token = (0, tokenHelper_1.tokenCreate)({ user }, key, "10d");
+        res.cookie("accessToken", token, {
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+        });
         return res.status(200).json({
             status: "success",
             token: token,
@@ -74,3 +80,19 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
+const handleLogOut = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        res.clearCookie("accessToken");
+        return res.status(200).json({
+            status: "success",
+            msg: "User logout successfully",
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            status: "fail",
+            msg: error.toString(),
+        });
+    }
+});
+exports.handleLogOut = handleLogOut;

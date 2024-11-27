@@ -1,6 +1,7 @@
 import express from 'express';
 //  auth controller
-import {login, register} from "../controllers/authController";
+import {login, register,handleLogOut} from "../controllers/authController";
+import { isLogIn, isLogOut } from '../middlewares/authMiddleware';
 
 const router = express.Router();
 
@@ -8,6 +9,7 @@ const router = express.Router();
 
 router.post('/auth/register', register);
 router.post("/auth/login", login );
+router.get("/auth/logout", isLogIn,handleLogOut )
 
 export default router;
 

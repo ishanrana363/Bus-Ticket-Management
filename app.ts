@@ -8,12 +8,16 @@ import cors from "cors";
 const app = express();
 import connectDB from './db';
 import router from "./src/routes/api";
+import cookieParser from "cookie-parser";
+
+
 
 app.use(express.json());
 app.use(hpp());
 app.use(cors());
 app.use(helmet());
 app.use(mongoSanitize());
+app.use(cookieParser());
 
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
