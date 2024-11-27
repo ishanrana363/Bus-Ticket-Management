@@ -5,6 +5,14 @@ export const addBus = async (req: any, res: any) => {
     try {
         const role = req.headers.role;
 
+        const busNameData = await busModel.findOne({busName: busName});
+        if(busNameData){
+            return res.status(409).json({
+                status: 'fail',
+                msg: 'Bus name already exists'
+            });
+        }
+
         // Check if the role is admin
         if (role !== 'admin') {
             return res.status(403).json({
@@ -14,7 +22,8 @@ export const addBus = async (req: any, res: any) => {
         }
         let data = await busModel.create({ busName: busName, totalSeats: totalSeats, route: route, departureTime: departureTime });
         res.status(201).json({
-            meg: "Bus added successfully",
+            status:"success",   
+            msg: "Bus added successfully",
             data: data
         });
     } catch (error: any) {
@@ -46,6 +55,7 @@ export const updateBus = async (req: any, res: any) => {
             });
         }
         res.status(200).json({
+            status:"success",
             msg: "Bus updated successfully",
             data: data
         });
@@ -83,6 +93,7 @@ export const deleteBus = async (req: any, res: any) => {
 
         // Return success response
         res.status(200).json({
+            status:"success",
             msg: 'Bus deleted successfully',
             data: data
         });

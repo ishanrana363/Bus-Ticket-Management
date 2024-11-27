@@ -18,6 +18,13 @@ const addBus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { busName, totalSeats, route, departureTime } = req.body;
     try {
         const role = req.headers.role;
+        const busNameData = yield busModel_1.default.findOne({ busName: busName });
+        if (busNameData) {
+            return res.status(409).json({
+                status: 'fail',
+                msg: 'Bus name already exists'
+            });
+        }
         // Check if the role is admin
         if (role !== 'admin') {
             return res.status(403).json({
@@ -27,7 +34,8 @@ const addBus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         let data = yield busModel_1.default.create({ busName: busName, totalSeats: totalSeats, route: route, departureTime: departureTime });
         res.status(201).json({
-            meg: "Bus added successfully",
+            status: "success",
+            msg: "Bus added successfully",
             data: data
         });
     }
@@ -59,6 +67,7 @@ const updateBus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         res.status(200).json({
+            status: "success",
             msg: "Bus updated successfully",
             data: data
         });
@@ -93,6 +102,7 @@ const deleteBus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         // Return success response
         res.status(200).json({
+            status: "success",
             msg: 'Bus deleted successfully',
             data: data
         });
