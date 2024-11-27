@@ -12,6 +12,8 @@ const authMiddleware_1 = require("../middlewares/authMiddleware");
 const busController_1 = require("../controllers/busController");
 // tickets controller
 const ticketController_1 = require("./../controllers/ticketController");
+// user controller
+const userController_1 = require("../controllers/userController");
 const router = express_1.default.Router();
 // auth related api
 router.post('/auth/register', authController_1.register);
@@ -24,33 +26,7 @@ router.delete("/admin/bus/:id", authMiddleware_1.isLogIn, authMiddleware_1.isAdm
 // ticket related api
 router.post("/admin/ticket", authMiddleware_1.isLogIn, authMiddleware_1.isAdmin, ticketController_1.uploadTicket);
 router.put("/admin/ticket/:id", authMiddleware_1.isLogIn, authMiddleware_1.isAdmin, ticketController_1.updateTicket);
+router.delete("/admin/ticket/:id", authMiddleware_1.isLogIn, authMiddleware_1.isAdmin, ticketController_1.deleteTicket);
+// user related api
+router.get("/buses", userController_1.allBuses);
 exports.default = router;
-// import { Request, Response } from "express";
-// import { Ticket } from "../models/Ticket.model";
-// // Fetch available tickets
-// export const getTickets = async (req: Request, res: Response): Promise<void> => {
-//   try {
-//     const { busId, startTime, endTime } = req.query;
-//     // Build query dynamically
-//     const query: any = {};
-//     if (busId) query.busId = busId;
-//     if (startTime && endTime) {
-//       query.departureTime = {
-//         $gte: new Date(startTime as string),
-//         $lte: new Date(endTime as string),
-//       };
-//     }
-//     // Fetch tickets from the database
-//     const tickets = await Ticket.find(query).populate("busId", "name route");
-//     res.status(200).json({
-//       success: true,
-//       data: tickets,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Failed to fetch tickets.",
-//       error: error.message,
-//     });
-//   }
-// };

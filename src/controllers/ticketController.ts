@@ -69,40 +69,37 @@ export const updateTicket = async (req: any, res: any) => {
     }
 };
 
-// export const deleteBus = async (req: any, res: any) => {
-//     const { id } = req.params;
-//     const role = req.headers.role;
 
-//     // Check if the role is admin
-//     if (role !== 'admin') {
-//         return res.status(403).json({
-//             status: 'fail',
-//             msg: 'You do not have permission to delete a bus'
-//         });
-//     }
+export const deleteTicket = async (req: any, res: any) => {
+    const { id } = req.params;
+    const role = req.headers.role;
 
-//     try {
-//         // Perform the deletion query
-//         const data = await ticketModel.findByIdAndDelete(id);
+    // Check if the role is admin
+    if (role !== 'admin') {
+        return res.status(403).json({
+            status: 'fail',
+            msg: 'You do not have permission to delete a ticket'
+        });
+    }
 
-//         // If no bus is found with the given ID, return an error
-//         if (!data) {
-//             return res.status(404).json({
-//                 status: 'fail',
-//                 msg: 'Bus not found',
-//             });
-//         }
+    try {
+        const data = await ticketModel.findByIdAndDelete(id);
 
-//         // Return success response
-//         res.status(200).json({
-//             msg: 'Bus deleted successfully',
-//             data: data
-//         });
-//     } catch (error: any) {
-//         // Catch and handle any errors that may occur
-//         return res.status(500).json({
-//             status: 'fail',
-//             msg: error.toString(),
-//         });
-//     }
-// };
+        if (!data) {
+            return res.status(404).json({
+                status: 'fail',
+                msg: 'Ticket not found',
+            });
+        }
+
+        res.status(200).json({
+            msg: 'Ticket deleted successfully',
+            data: data
+        });
+    } catch (error: any) {
+        return res.status(500).json({
+            status: 'fail',
+            msg: error.toString(),
+        });
+    }
+};

@@ -5,10 +5,10 @@ import {login, register,handleLogOut} from "../controllers/authController";
 import { isAdmin, isLogIn, isLogOut } from '../middlewares/authMiddleware';
 // bus controller
 import { addBus, deleteBus, updateBus } from '../controllers/busController';
-
 // tickets controller
-
-import { updateTicket, uploadTicket } from './../controllers/ticketController';
+import { deleteTicket, updateTicket, uploadTicket } from './../controllers/ticketController';
+// user controller
+import { allBuses } from '../controllers/userController';
 
 
 const router = express.Router();
@@ -29,40 +29,12 @@ router.delete("/admin/bus/:id",isLogIn,isAdmin,deleteBus);
 
 router.post("/admin/ticket", isLogIn,isAdmin,uploadTicket );
 router.put("/admin/ticket/:id", isLogIn,isAdmin,updateTicket );
+router.delete("/admin/ticket/:id",isLogIn,isAdmin,deleteTicket);
+
+// user related api
+
+router.get("/buses" , allBuses );
 
 export default router;
 
 
-// import { Request, Response } from "express";
-// import { Ticket } from "../models/Ticket.model";
-
-// // Fetch available tickets
-// export const getTickets = async (req: Request, res: Response): Promise<void> => {
-//   try {
-//     const { busId, startTime, endTime } = req.query;
-
-//     // Build query dynamically
-//     const query: any = {};
-//     if (busId) query.busId = busId;
-//     if (startTime && endTime) {
-//       query.departureTime = {
-//         $gte: new Date(startTime as string),
-//         $lte: new Date(endTime as string),
-//       };
-//     }
-
-//     // Fetch tickets from the database
-//     const tickets = await Ticket.find(query).populate("busId", "name route");
-
-//     res.status(200).json({
-//       success: true,
-//       data: tickets,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Failed to fetch tickets.",
-//       error: error.message,
-//     });
-//   }
-// };
