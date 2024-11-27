@@ -23,13 +23,14 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         // Check if user already exists
         const userEmail = yield userModel_1.default.findOne({ email: email });
         if (userEmail)
-            return res.status(400).json({
+            return res.status(409).json({
                 status: 'fail',
-                msg: 'User already exists',
+                msg: 'User email already exists',
             });
         const user = yield userModel_1.default.create({ name: name, email: email, password: hashedPassword });
         return res.status(201).json({
             status: 'success',
+            msg: "User created successfully",
             data: user,
         });
     }
@@ -45,6 +46,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let reqBody = req.body;
         const { email, password } = reqBody;
+        // Find user by email
         const user = yield userModel_1.default.findOne({ email: email });
         if (!user) {
             return res.status(404).send({
@@ -52,30 +54,36 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 message: "User not found"
             });
         }
-        let matchPassword = bcryptjs_1.default.compare(password, user.password);
+        // Check if the password matches
+        const matchPassword = yield bcryptjs_1.default.compare(password, user.password);
         if (!matchPassword) {
             return res.status(403).json({
                 status: "fail",
-                msg: "password not match",
+                msg: "Password does not match",
             });
         }
+        // Generate JWT token
         const key = process.env.JWTKEY;
         const token = (0, tokenHelper_1.tokenCreate)({ user }, key, "10d");
+        // Set JWT token in cookies
         res.cookie("accessToken", token, {
-            maxAge: 7 * 24 * 60 * 60 * 1000,
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
             httpOnly: true,
-            secure: true,
-            sameSite: "none",
+            secure: true, // Only send cookies over HTTPS
+            sameSite: "none", // Allow cross-origin requests
         });
+        // Send successful response
         return res.status(200).json({
             status: "success",
+            msg: "User logged in successfully",
             token: token,
         });
     }
     catch (error) {
+        console.error(error); // Log the error for debugging
         return res.status(500).send({
             status: "fail",
-            message: error.toString()
+            message: "Internal server error"
         });
     }
 });

@@ -10,13 +10,14 @@ export const register = async (req: any, res: any) => {
     try {
         // Check if user already exists
         const userEmail = await userModel.findOne({ email: email });
-        if (userEmail) return res.status(400).json({
+        if (userEmail) return res.status(409).json({
             status: 'fail',
-            msg: 'User already exists',
+            msg: 'User email already exists',
         })
         const user = await userModel.create({ name: name, email: email, password: hashedPassword });
         return res.status(201).json({
             status: 'success',
+            msg: "User created successfully",
             data: user,
         })
     } catch (error: any) {
@@ -30,41 +31,50 @@ export const register = async (req: any, res: any) => {
 export const login = async (req: any, res: any) => {
     try {
         let reqBody = req.body;
-
         const { email, password } = reqBody;
 
+        // Find user by email
         const user = await userModel.findOne({ email: email });
-
         if (!user) {
             return res.status(404).send({
                 status: "fail",
                 message: "User not found"
             });
         }
-        let matchPassword = bcrypt.compare(password, user.password);
+
+        // Check if the password matches
+        const matchPassword = await bcrypt.compare(password, user.password);
         if (!matchPassword) {
             return res.status(403).json({
                 status: "fail",
-                msg: "password not match",
+                msg: "Password does not match",
             });
         }
+
+        // Generate JWT token
         const key: any = process.env.JWTKEY;
         const token = tokenCreate({ user }, key, "10d");
+
+        // Set JWT token in cookies
         res.cookie("accessToken", token, {
-            maxAge: 7 * 24 * 60 * 60 * 1000,
+            maxAge: 7 * 24 * 60 * 60 * 1000,  // 1 week
             httpOnly: true,
-            secure: true,
-            sameSite: "none",
+            secure: true,                      // Only send cookies over HTTPS
+            sameSite: "none",                  // Allow cross-origin requests
         });
+
+        // Send successful response
         return res.status(200).json({
             status: "success",
+            msg: "User logged in successfully",
             token: token,
         });
     } catch (error: any) {
+        console.error(error);  // Log the error for debugging
         return res.status(500).send({
             status: "fail",
-            message: error.toString()
-        })
+            message: "Internal server error"
+        });
     }
 };
 
