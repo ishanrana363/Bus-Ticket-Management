@@ -35,7 +35,8 @@ const uploadTicket = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         let data = yield ticketModel_1.default.create(reqBody);
         res.status(201).json({
-            meg: "Ticket added successfully",
+            status: "success",
+            msg: "Ticket added successfully",
             data: data
         });
     }
@@ -67,6 +68,7 @@ const updateTicket = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             });
         }
         res.status(200).json({
+            status: "success",
             msg: "ticket updated successfully",
             data: data
         });
@@ -98,6 +100,7 @@ const deleteTicket = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             });
         }
         res.status(200).json({
+            status: "success",
             msg: 'Ticket deleted successfully',
             data: data
         });

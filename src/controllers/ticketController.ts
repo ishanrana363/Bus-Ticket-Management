@@ -26,7 +26,8 @@ export const uploadTicket = async (req: any, res: any) => {
         }
         let data = await ticketModel.create(reqBody);
         res.status(201).json({
-            meg: "Ticket added successfully",
+            status : "success",
+            msg: "Ticket added successfully",
             data: data
         });
     } catch (error: any) {
@@ -58,6 +59,7 @@ export const updateTicket = async (req: any, res: any) => {
             });
         }
         res.status(200).json({
+            status : "success",
             msg: "ticket updated successfully",
             data: data
         });
@@ -93,6 +95,7 @@ export const deleteTicket = async (req: any, res: any) => {
         }
 
         res.status(200).json({
+            status : "success",
             msg: 'Ticket deleted successfully',
             data: data
         });

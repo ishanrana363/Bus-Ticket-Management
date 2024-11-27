@@ -20,6 +20,7 @@ const allBuses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const buses = yield busModel_1.default.find();
         res.status(200).json({
             status: "success",
+            msg: "fetch all buses",
             data: buses,
         });
     }
@@ -35,6 +36,12 @@ exports.allBuses = allBuses;
 const getTicketsBusAndTime = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { busId, startTime, endTime } = req.body;
+        if (!busId || !startTime || !endTime) {
+            return res.status(400).json({
+                success: false,
+                message: "All fields are required.",
+            });
+        }
         // Build query dynamically
         const query = {};
         if (busId)
@@ -47,15 +54,22 @@ const getTicketsBusAndTime = (req, res) => __awaiter(void 0, void 0, void 0, fun
         }
         // Fetch tickets from the database
         const tickets = yield ticketModel_1.default.find(query);
-        res.status(200).json({
-            success: true,
+        if (tickets.length === 0) {
+            return res.status(404).json({
+                status: "fail",
+                msg: "No tickets found for the provided bus ID and time range.",
+            });
+        }
+        return res.status(200).json({
+            status: "success",
+            msg: "find tickets successfully",
             data: tickets,
         });
     }
     catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Failed to fetch tickets.",
+        return res.status(500).json({
+            status: "fail",
+            msg: "An error occurred while fetching tickets.",
             error: error.message,
         });
     }
