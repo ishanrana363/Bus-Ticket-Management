@@ -48,6 +48,6 @@ const ticketSchema = new mongoose_1.Schema({
         type: String,
         required: true
     }
-});
+}, { timestamps: true, versionKey: false });
 const ticketModel = mongoose_1.default.model("ticket", ticketSchema);
 exports.default = ticketModel;

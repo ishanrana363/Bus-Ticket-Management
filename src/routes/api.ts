@@ -1,7 +1,8 @@
 import express from 'express';
 //  auth controller
 import {login, register,handleLogOut} from "../controllers/authController";
-import { isLogIn, isLogOut } from '../middlewares/authMiddleware';
+import { isAdmin, isLogIn, isLogOut } from '../middlewares/authMiddleware';
+import { addBus, updateBus } from '../controllers/busController';
 
 const router = express.Router();
 
@@ -10,6 +11,11 @@ const router = express.Router();
 router.post('/auth/register', register);
 router.post("/auth/login", login );
 router.get("/auth/logout", isLogIn,handleLogOut )
+
+// bus related api
+
+router.post("/admin/bus", isLogIn,isAdmin,addBus )
+router.put("/admin/bus/:id", isLogIn,isAdmin,updateBus )
 
 export default router;
 

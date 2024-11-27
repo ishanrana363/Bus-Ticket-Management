@@ -20,7 +20,7 @@ const ticketSchema : Schema <ITicket> = new Schema({
         required: true
     }
     
-});
+},{timestamps: true,versionKey:false});
 
 const ticketModel = mongoose.model<ITicket>("ticket",ticketSchema);
 

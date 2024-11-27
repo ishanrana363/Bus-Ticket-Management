@@ -2,7 +2,7 @@ import mongoose, {Schema,Document} from "mongoose";
 
 export interface Ibus extends Document {
     busName : string;
-    seats : number;
+    totalSeats : number;
     route : string[];
     departureTime : Date;
 };
@@ -14,7 +14,7 @@ const busSchema : Schema <Ibus> = new Schema({
         required : true,
         unique : true
     },
-    seats : {
+    totalSeats : {
         type : Number,
         required : true
     },
@@ -26,7 +26,7 @@ const busSchema : Schema <Ibus> = new Schema({
         type : Date,
         required : true
     }
-});
+},{versionKey:false,timestamps:true});
 
 const busModel = mongoose.model<Ibus>("bus",busSchema);
 

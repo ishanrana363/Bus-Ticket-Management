@@ -41,7 +41,7 @@ const busSchema = new mongoose_1.Schema({
         required: true,
         unique: true
     },
-    seats: {
+    totalSeats: {
         type: Number,
         required: true
     },
@@ -53,6 +53,6 @@ const busSchema = new mongoose_1.Schema({
         type: Date,
         required: true
     }
-});
+}, { versionKey: false, timestamps: true });
 const busModel = mongoose_1.default.model("bus", busSchema);
 exports.default = busModel;

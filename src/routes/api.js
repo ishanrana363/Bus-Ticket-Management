@@ -7,11 +7,15 @@ const express_1 = __importDefault(require("express"));
 //  auth controller
 const authController_1 = require("../controllers/authController");
 const authMiddleware_1 = require("../middlewares/authMiddleware");
+const busController_1 = require("../controllers/busController");
 const router = express_1.default.Router();
 // auth related api
 router.post('/auth/register', authController_1.register);
 router.post("/auth/login", authController_1.login);
 router.get("/auth/logout", authMiddleware_1.isLogIn, authController_1.handleLogOut);
+// bus related api
+router.post("/admin/bus", authMiddleware_1.isLogIn, authMiddleware_1.isAdmin, busController_1.addBus);
+router.put("/admin/bus/:id", authMiddleware_1.isLogIn, authMiddleware_1.isAdmin, busController_1.updateBus);
 exports.default = router;
 // import { Request, Response } from "express";
 // import { Ticket } from "../models/Ticket.model";

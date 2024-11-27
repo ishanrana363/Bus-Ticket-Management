@@ -68,7 +68,6 @@ export const login = async (req: any, res: any) => {
     }
 };
 
-
 export const handleLogOut = async (req: any, res: any) => {
     try {
         res.clearCookie("accessToken");
