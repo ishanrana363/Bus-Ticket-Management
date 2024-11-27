@@ -78,6 +78,7 @@ exports.isLogOut = isLogOut;
 const isAdmin = (req, res, next) => {
     try {
         const role = req.headers.role;
+        console.log(role);
         if (role !== "admin") {
             res.status(403).json({
                 status: "fail",

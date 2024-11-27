@@ -16,6 +16,7 @@ router.get("/auth/logout", authMiddleware_1.isLogIn, authController_1.handleLogO
 // bus related api
 router.post("/admin/bus", authMiddleware_1.isLogIn, authMiddleware_1.isAdmin, busController_1.addBus);
 router.put("/admin/bus/:id", authMiddleware_1.isLogIn, authMiddleware_1.isAdmin, busController_1.updateBus);
+router.delete("/admin/bus/:id", authMiddleware_1.isLogIn, authMiddleware_1.isAdmin, busController_1.deleteBus);
 exports.default = router;
 // import { Request, Response } from "express";
 // import { Ticket } from "../models/Ticket.model";

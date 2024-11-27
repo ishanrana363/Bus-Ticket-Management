@@ -13,7 +13,7 @@ interface DecodedToken extends JwtPayload {
 // Middleware to check if the user is logged in
 export const isLogIn = (req: any, res: any, next: any): void => {
     try {
-        let token: string | undefined = req.headers.authorization;
+        let token = req.headers.authorization;
 
         if (!token) {
             token = req.cookies?.accessToken;
@@ -29,6 +29,7 @@ export const isLogIn = (req: any, res: any, next: any): void => {
 
         // Verify the token
         const decode = jwt.verify(token, accessTokenKey) as DecodedToken;
+
 
         if (!decode) {
             res.status(401).json({
@@ -85,6 +86,7 @@ export const isLogOut = (req: any, res: any, next: any): void => {
 export const isAdmin = (req: any, res: any, next:any ): void => {
     try {
         const role = req.headers.role;
+        console.log(role)
 
         if (role !== "admin") {
             res.status(403).json({
