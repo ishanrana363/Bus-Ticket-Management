@@ -1,8 +1,15 @@
 import express from 'express';
 //  auth controller
 import {login, register,handleLogOut} from "../controllers/authController";
+// auth midddleware
 import { isAdmin, isLogIn, isLogOut } from '../middlewares/authMiddleware';
+// bus controller
 import { addBus, deleteBus, updateBus } from '../controllers/busController';
+
+// tickets controller
+
+import { updateTicket, uploadTicket } from './../controllers/ticketController';
+
 
 const router = express.Router();
 
@@ -16,7 +23,12 @@ router.get("/auth/logout", isLogIn,handleLogOut );
 
 router.post("/admin/bus",isLogIn,isAdmin,addBus );
 router.put("/admin/bus/:id", isLogIn,isAdmin,updateBus );
-router.delete("/admin/bus/:id",isLogIn,isAdmin,deleteBus)
+router.delete("/admin/bus/:id",isLogIn,isAdmin,deleteBus);
+
+// ticket related api
+
+router.post("/admin/ticket", isLogIn,isAdmin,uploadTicket );
+router.put("/admin/ticket/:id", isLogIn,isAdmin,updateTicket );
 
 export default router;
 

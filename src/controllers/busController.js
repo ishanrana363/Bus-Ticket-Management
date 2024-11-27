@@ -104,5 +104,5 @@ const deleteBus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             msg: error.toString(),
         });
     }
-}); /*  */
+});
 exports.deleteBus = deleteBus;

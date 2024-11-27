@@ -6,8 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 //  auth controller
 const authController_1 = require("../controllers/authController");
+// auth midddleware
 const authMiddleware_1 = require("../middlewares/authMiddleware");
+// bus controller
 const busController_1 = require("../controllers/busController");
+// tickets controller
+const ticketController_1 = require("./../controllers/ticketController");
 const router = express_1.default.Router();
 // auth related api
 router.post('/auth/register', authController_1.register);
@@ -17,6 +21,9 @@ router.get("/auth/logout", authMiddleware_1.isLogIn, authController_1.handleLogO
 router.post("/admin/bus", authMiddleware_1.isLogIn, authMiddleware_1.isAdmin, busController_1.addBus);
 router.put("/admin/bus/:id", authMiddleware_1.isLogIn, authMiddleware_1.isAdmin, busController_1.updateBus);
 router.delete("/admin/bus/:id", authMiddleware_1.isLogIn, authMiddleware_1.isAdmin, busController_1.deleteBus);
+// ticket related api
+router.post("/admin/ticket", authMiddleware_1.isLogIn, authMiddleware_1.isAdmin, ticketController_1.uploadTicket);
+router.put("/admin/ticket/:id", authMiddleware_1.isLogIn, authMiddleware_1.isAdmin, ticketController_1.updateTicket);
 exports.default = router;
 // import { Request, Response } from "express";
 // import { Ticket } from "../models/Ticket.model";

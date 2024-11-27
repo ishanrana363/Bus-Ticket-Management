@@ -93,4 +93,4 @@ export const deleteBus = async (req: any, res: any) => {
             msg: error.toString(),
         });
     }
-};/*  */
+};

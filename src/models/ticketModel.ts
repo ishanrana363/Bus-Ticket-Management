@@ -3,7 +3,8 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface ITicket extends Document {
     busId: mongoose.Schema.Types.ObjectId;
     seatNumber: string;
-    ticketPrice : string
+    ticketPrice : string,
+    busDeparatureTime : Date;
 };
 
 const ticketSchema : Schema <ITicket> = new Schema({
@@ -13,10 +14,15 @@ const ticketSchema : Schema <ITicket> = new Schema({
     },
     seatNumber: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     ticketPrice : {
         type: String,
+        required: true
+    },
+    busDeparatureTime : {
+        type: Date,
         required: true
     }
     

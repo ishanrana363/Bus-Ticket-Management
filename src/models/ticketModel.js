@@ -42,10 +42,15 @@ const ticketSchema = new mongoose_1.Schema({
     },
     seatNumber: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     ticketPrice: {
         type: String,
+        required: true
+    },
+    busDeparatureTime: {
+        type: Date,
         required: true
     }
 }, { timestamps: true, versionKey: false });
