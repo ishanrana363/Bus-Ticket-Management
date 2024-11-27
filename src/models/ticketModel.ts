@@ -1,29 +1,25 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface ITicket extends Document {
-    userId: mongoose.Schema.Types.ObjectId;
-    bus: mongoose.Schema.Types.ObjectId;
-    seatNumber: number;
-    bookingDate: Date;
+    busId: mongoose.Schema.Types.ObjectId;
+    seatNumber: string;
+    ticketPrice : string
 };
 
 const ticketSchema : Schema <ITicket> = new Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
-    },
-    bus: {
+    busId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     seatNumber: {
-        type: Number,
+        type: String,
         required: true
     },
-    bookingDate: {
-        type: Date,
-        default: Date.now
+    ticketPrice : {
+        type: String,
+        required: true
     }
+    
 });
 
 const ticketModel = mongoose.model<ITicket>("ticket",ticketSchema);

@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.register = void 0;
+exports.login = exports.register = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const userModel_1 = __importDefault(require("../models/userModel"));
+const tokenHelper_1 = require("../helper/tokenHelper");
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password } = req.body;
     const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
@@ -40,3 +41,36 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.register = register;
+const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let reqBody = req.body;
+        const { email, password } = reqBody;
+        const user = yield userModel_1.default.findOne({ email: email });
+        if (!user) {
+            return res.status(404).send({
+                status: "fail",
+                message: "User not found"
+            });
+        }
+        let matchPassword = bcryptjs_1.default.compare(password, user.password);
+        if (!matchPassword) {
+            return res.status(403).json({
+                status: "fail",
+                msg: "password not match",
+            });
+        }
+        const key = process.env.JWTKEY;
+        const token = (0, tokenHelper_1.tokenCreate)({ user }, key, "10d");
+        return res.status(200).json({
+            status: "success",
+            token: token,
+        });
+    }
+    catch (error) {
+        return res.status(500).send({
+            status: "fail",
+            message: error.toString()
+        });
+    }
+});
+exports.login = login;

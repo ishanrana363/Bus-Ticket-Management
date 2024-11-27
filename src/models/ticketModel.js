@@ -36,21 +36,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 ;
 const ticketSchema = new mongoose_1.Schema({
-    userId: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        required: true
-    },
-    bus: {
+    busId: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         required: true
     },
     seatNumber: {
-        type: Number,
+        type: String,
         required: true
     },
-    bookingDate: {
-        type: Date,
-        default: Date.now
+    ticketPrice: {
+        type: String,
+        required: true
     }
 });
 const ticketModel = mongoose_1.default.model("ticket", ticketSchema);

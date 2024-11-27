@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import userModel from "../models/userModel"
+import { tokenCreate } from "../helper/tokenHelper";
 
 
 export const register = async (req:any,res:any)=>{
@@ -25,3 +26,38 @@ export const register = async (req:any,res:any)=>{
         })
     }
 }
+
+export const login = async (req:any, res:any) => {
+    try {
+        let reqBody = req.body;
+
+        const { email, password } = reqBody;
+
+        const user = await userModel.findOne({ email: email });
+
+        if (!user) {
+            return res.status(404).send({
+                status: "fail",
+                message: "User not found"
+            });
+        }
+        let matchPassword = bcrypt.compare(password, user.password);
+        if (!matchPassword) {
+            return res.status(403).json({
+                status: "fail",
+                msg: "password not match",
+            });
+        }
+        const key : any = process.env.JWTKEY;
+        const token = tokenCreate({user}, key, "10d" );
+        return res.status(200).json({
+            status: "success",
+            token: token,
+        });
+    } catch (error:any) {
+        return res.status(500).send({
+            status: "fail",
+            message: error.toString()
+        })
+    }
+};
