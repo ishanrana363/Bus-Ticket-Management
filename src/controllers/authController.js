@@ -97,6 +97,7 @@ const handleLogOut = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     catch (error) {
+        console.log(error);
         return res.status(500).json({
             status: "fail",
             msg: error.toString(),

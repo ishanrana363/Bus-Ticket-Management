@@ -86,6 +86,7 @@ export const handleLogOut = async (req: any, res: any) => {
             msg: "User logout successfully",
         });
     } catch (error: any) {
+        console.log(error)
         return res.status(500).json({
             status: "fail",
             msg: error.toString(),
