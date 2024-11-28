@@ -73,7 +73,7 @@ export const login = async (req: any, res: any) => {
         console.error(error);  // Log the error for debugging
         return res.status(500).send({
             status: "fail",
-            message: "Internal server error"
+            msg: "Internal server error"
         });
     }
 };

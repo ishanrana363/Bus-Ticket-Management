@@ -83,7 +83,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.error(error); // Log the error for debugging
         return res.status(500).send({
             status: "fail",
-            message: "Internal server error"
+            msg: "Internal server error"
         });
     }
 });

@@ -21,7 +21,7 @@ export const allBuses = async (req: any, res: any) => {
 
 export const getTicketsBusAndTime = async (req: any, res: any) => {
     try {
-        const { busId, startTime, endTime } = req.body;
+        const { id,busId, startTime, endTime } = req.body;
 
         if(!busId || !startTime || !endTime){
             return res.status(400).json({
@@ -32,6 +32,7 @@ export const getTicketsBusAndTime = async (req: any, res: any) => {
 
         // Build query dynamically
         const query: any = {};
+        if (id) query._id = id;
         if (busId) query.busId = busId;
         if (startTime && endTime) {
             query.busDeparatureTime = {
@@ -68,7 +69,7 @@ export const ticketPurchase = async (req: any, res: any) => {
     const id = req.headers._id;
     console.log(id)
     try {
-        const { busId, startTime, endTime,purchaseTime } = req.body;
+        const { id, busId, startTime, endTime,purchaseTime } = req.body;
 
         if(!busId || !startTime || !endTime){
             return res.status(400).json({
@@ -79,6 +80,7 @@ export const ticketPurchase = async (req: any, res: any) => {
 
         // Build query dynamically
         const query: any = {};
+        if(id) query._id =id
         if (busId) query.busId = busId;
         if (startTime && endTime) {
             query.busDeparatureTime = {

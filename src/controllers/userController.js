@@ -35,7 +35,7 @@ const allBuses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.allBuses = allBuses;
 const getTicketsBusAndTime = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { busId, startTime, endTime } = req.body;
+        const { id, busId, startTime, endTime } = req.body;
         if (!busId || !startTime || !endTime) {
             return res.status(400).json({
                 success: false,
@@ -44,6 +44,8 @@ const getTicketsBusAndTime = (req, res) => __awaiter(void 0, void 0, void 0, fun
         }
         // Build query dynamically
         const query = {};
+        if (id)
+            query._id = id;
         if (busId)
             query.busId = busId;
         if (startTime && endTime) {
@@ -79,7 +81,7 @@ const ticketPurchase = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const id = req.headers._id;
     console.log(id);
     try {
-        const { busId, startTime, endTime, purchaseTime } = req.body;
+        const { id, busId, startTime, endTime, purchaseTime } = req.body;
         if (!busId || !startTime || !endTime) {
             return res.status(400).json({
                 success: false,
@@ -88,6 +90,8 @@ const ticketPurchase = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
         // Build query dynamically
         const query = {};
+        if (id)
+            query._id = id;
         if (busId)
             query.busId = busId;
         if (startTime && endTime) {
