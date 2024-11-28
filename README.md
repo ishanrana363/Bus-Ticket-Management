@@ -157,3 +157,15 @@ name: {
         "startTime": "2024-11-27T00:00:00.000Z",
         "endTime": "2024-11-27T23:59:59.999Z"
     }
+
+
+(3) View available tickets for specific buses and time periods and user purchase : 
+    method : GET
+    api endpoint : https://bus-ticket-management.vercel.app/api/v1/tickets/purchase
+    user can  available tickets for specific buses and time periods this payload and purchase tickets
+    {
+        "id" : "674691a4b0a084ae670cacba"
+        "busId": "674691a4b0a084ae670cacba",
+        "startTime": "2024-11-27T00:00:00.000Z",
+        "endTime": "2024-11-27T23:59:59.999Z"
+    }
